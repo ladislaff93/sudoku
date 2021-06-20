@@ -8,15 +8,16 @@ import numpy as np
 5.Repeate 1,2,3.
 '''
 board = [[0 for x in range(1,10)] for y in range(1,10)] 
-#board = [[3,0,6,5,0,8,4,0,0],
-        #[5,2,0,0,0,0,0,0,0],
-        #[0,8,7,0,0,0,0,3,1],
-        #[0,0,3,0,1,0,0,8,0],
-        #[9,0,0,8,6,3,0,0,5],
-        #[0,5,0,0,9,0,6,0,0],
-        #[1,3,0,0,0,0,2,5,0],
-        #[0,0,0,0,0,0,0,7,4],
-        #[0,0,5,2,0,6,3,0,0]]
+board = [[3,0,6,5,0,8,4,0,0],
+        [5,2,0,0,0,0,0,0,0],
+        [0,8,7,0,0,0,0,3,1],
+        [0,0,3,0,1,0,0,8,0],
+        [9,0,0,8,6,3,0,0,5],
+        [0,5,0,0,9,0,6,0,0],
+        [1,3,0,0,0,0,2,5,0],
+        [0,0,0,0,0,0,0,7,4],
+        [0,0,5,2,0,6,3,0,0]]
+
 
 def pretty_printed(board):
   for r in range(len(board)):
@@ -30,12 +31,14 @@ def pretty_printed(board):
       else:
         print(str(board[r][c])+' ' ,end='')
 
+
 def empty_space(board):
   for r in range(len(board)):
     for c in range(len(board[r])):
       if board[r][c] == 0:
         return (r,c)
   return None
+
 
 def valid_n(board,n,r,c):
   for i in range(len(board)):
@@ -54,6 +57,7 @@ def valid_n(board,n,r,c):
         return False
 
   return True
+  
 
 def sudoku_solver(board):
     if not empty_space(board):  #if you dont find empty space return True because if function is true that mean  
@@ -68,6 +72,7 @@ def sudoku_solver(board):
             board[r][c] = 0 
     return False
 
+
 def random_zeros(board):
   counter = 0
   while counter <= 40:
@@ -76,6 +81,8 @@ def random_zeros(board):
     c = int(np.random.choice(9,1))
     board[r][c] = 0
 
-sudoku_solver(board)
-random_zeros(board)
-pretty_printed(board)
+
+if __name__ == 'main':
+  sudoku_solver(board)
+  random_zeros(board)
+  pretty_printed(board)
