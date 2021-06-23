@@ -20,44 +20,44 @@ board = [[3,0,6,5,0,8,4,0,0],
 
 
 def pretty_printed(board):
-  for r in range(len(board)):
-    if r%3==0 and r!=0:
-      print('-------------------')
-    for c in range(len(board[r])):
-      if c%3==0 and c!=0:
-        print('|',end='')
-      if c == 8:
-        print(board[r][c])
-      else:
-        print(str(board[r][c])+' ' ,end='')
+    for r in range(len(board)):
+        if r%3==0 and r!=0:
+            print('-------------------')
+        for c in range(len(board[r])):
+            if c%3==0 and c!=0:
+                print('|',end='')
+            if c == 8:
+                print(board[r][c])
+            else:
+                print(str(board[r][c])+' ' ,end='')
 
 
 def empty_space(board):
-  for r in range(len(board)):
-    for c in range(len(board[r])):
-      if board[r][c] == 0:
-        return (r,c)
-  return None
+    for r in range(len(board)):
+        for c in range(len(board[r])):
+            if board[r][c] == 0:
+                return (r,c)
+    return None
 
 
 def valid_n(board,n,r,c):
-  for i in range(len(board)):
-    #column
-    if n == board[i][c]:
-      return False
-    #row
-    if n == board[r][i]: 
-      return False
+    for i in range(len(board)):
+        #column
+        if n == board[i][c]:
+            return False
+        #row
+        if n == board[r][i]: 
+            return False
 
-  r_ = r//3
-  c_ = c//3
-  for r in range(r_*3,r_*3+3):
-    for c in range(c_*3,c_*3+3):
-      if n == board[r][c]:
-        return False
+    r_ = r//3
+    c_ = c//3
+    for r in range(r_*3,r_*3+3):
+        for c in range(c_*3,c_*3+3):
+            if n == board[r][c]:
+                return False
 
-  return True
-  
+    return True
+    
 
 def sudoku_solver(board):
     if not empty_space(board):  #if you dont find empty space return True because if function is true that mean  
@@ -74,15 +74,15 @@ def sudoku_solver(board):
 
 
 def random_zeros(board):
-  counter = 0
-  while counter <= 40:
-    counter += 1
-    r = int(np.random.choice(9,1))
-    c = int(np.random.choice(9,1))
-    board[r][c] = 0
+    counter = 0
+    while counter <= 40:
+        counter += 1
+        r = int(np.random.choice(9,1))
+        c = int(np.random.choice(9,1))
+        board[r][c] = 0
 
 
-if __name__ == 'main':
-  sudoku_solver(board)
-  random_zeros(board)
-  pretty_printed(board)
+if __name__ == '__main__':
+    sudoku_solver(board)
+    random_zeros(board)
+    pretty_printed(board)
