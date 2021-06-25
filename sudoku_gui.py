@@ -1,10 +1,9 @@
 import pygame as pg
+import copy
 import time
 from pygame.constants import KEYDOWN, K_DELETE, K_LEFT, K_SPACE, K_UP
 from sudoku_engine import board
 from sudoku_engine import sudoku_solver
-from sudoku_engine import valid_n
-
 pg.init()
 pg.display.set_caption('Sudoku') 
 SIZE = 500
@@ -51,29 +50,41 @@ def counter(start):
     seconds = temp - 60*minutes
     n_text = FONT.render(str('%d:%d:%d' %(hours,minutes,seconds)), True, pg.Color('black'))
     screen.blit(n_text, pg.Vector2(((4*SQ_SIZE)-SQ_SIZE*0.20), (9*SQ_SIZE)+SQ_SIZE*0.25))
-
-def solved_board(board):
-    board_s = board.copy()
     
 
-def high_sq(screen, board, sel_sq, possible_moves):
+def solved_board(board):
+    check = []
+    board_s = copy.deepcopy(board)
+    sudoku_solver(board_s)    
+    for r in range(len(board_s)):
+        for c in range(len(board_s[r])):
+            check.append(((r, c), board_s[r][c]))
+    return check
+    
+
+def high_sq(screen, sel_sq, possible_moves):
     if sel_sq != ():
         row, column = sel_sq
         if sel_sq in possible_moves:
             srfc = pg.Surface((SQ_SIZE, SQ_SIZE))
             srfc.set_alpha(100)
-            srfc.fill(pg.Color('blue'))
-            screen.blit(srfc, ((column*SQ_SIZE),(row*SQ_SIZE)))
+            srfc.fill(pg.Color('black'))
+            screen.blit(srfc, (((column*SQ_SIZE)+SQ_SIZE*0.05),((row*SQ_SIZE)+SQ_SIZE*0.05)))
+
+
+def pos_moves(list_):
+    for r in range(len(board)):
+        for c in range(len(board[r])):
+            if board[r][c] == 0:
+                list_.append((r,c)) 
+
 
 def main():
     possible_moves = []
     del_values = []
     sel_sq = tuple()
     temporary_value = int()
-    for r in range(len(board)):
-        for c in range(len(board[r])):
-            if board[r][c] == 0:
-               possible_moves.append((r,c)) 
+    pos_moves(possible_moves)
     start = time.time()
     run = True 
     while run:
@@ -111,10 +122,11 @@ def main():
         grid()
         numbers(possible_moves)
         counter(start)
-        high_sq(screen, board, sel_sq, possible_moves)
+        high_sq(screen, sel_sq, possible_moves)
         if len(sel_sq) != 0:
-            if valid_n(board, temporary_value, sel_sq[0], sel_sq[1]):
-                board[sel_sq[0]][sel_sq[1]] = temporary_value
+            for check in solved_board(board): 
+                if check[0] == sel_sq and check[1] == temporary_value:
+                        board[sel_sq[0]][sel_sq[1]] = temporary_value
             for d_move in del_values:
                 if d_move in possible_moves:
                     board[sel_sq[0]][sel_sq[1]] = 0   
@@ -122,6 +134,7 @@ def main():
 
         pg.display.flip()
     pg.quit()
+
 
 if __name__ == '__main__':
     main()
